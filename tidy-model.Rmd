@@ -6,7 +6,7 @@ date: "2025-02-17"
 ---
 
 ```{r setup, include=FALSE}
-knit::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(modeldata)
 ```
@@ -18,4 +18,31 @@ This R Markdown document demonstrates my ability to use models for data analysis
 ```{r load data, include=FALSE}
 data(crickets, package = "modeldata")
 names(crickets)
+```
+
+## What is that sound?
+
+In this report, we examine what factors predict a cricket's chirp rate.
+
+```{r summary, echo=FALSE}
+summary(crickets)
+
+ggplot(crickets, aes(x = rate)) +
+  geom_histogram(bins = 8) + 
+  ggtitle("Distribution of the chirp rate of crickets") +
+  xlab('Chirp rate (per min.)')
+```
+
+## Temperature affects chirp rate
+
+```{r temp, echo=FALSE}
+ggplot(crickets, aes(x = temp, y = rate)) +
+  geom_point() + 
+  geom_smooth(method = 'lm') +
+  ggtitle("Plot of temperature and chirp rate") +
+  ylab('Chirp rate (per min.)') +
+  xlab('Temperature (Celsius)')
+
+temp_lm <- lm(rate ~ temp, crickets)
+summary(temp_lm)
 ```
