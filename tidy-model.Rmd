@@ -1,0 +1,7 @@
+---
+title: "tidy model"
+author: "Jack Torres Zuniga"
+output: html_document
+date: "2025-02-17"
+---
+
