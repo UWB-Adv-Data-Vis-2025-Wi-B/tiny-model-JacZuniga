@@ -5,3 +5,17 @@ output: html_document
 date: "2025-02-17"
 ---
 
+```{r setup, include=FALSE}
+knit::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(modeldata)
+```
+
+## Introduction
+
+This R Markdown document demonstrates my ability to use models for data analysis using a dataset collected on crickets.
+
+```{r load data, include=FALSE}
+data(crickets, package = "modeldata")
+names(crickets)
+```
