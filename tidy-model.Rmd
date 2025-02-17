@@ -88,3 +88,17 @@ summary(species_x_temp_lm)
 anova(species_lm, species_x_temp_lm)
 ```
 
+The interaction test shows no significant difference, so we can rely on the simpler species model.
+
+## Modeling diamond prices
+
+```{r diamonds, echo=FALSE}
+data(diamonds, package = "ggplot2")
+
+diamond_lm <- lm(price ~ carat + cut + clarity, diamonds)
+summary(diamond_lm)
+```
+
+This model predicts diamond prices based on carat size, cut, and clarity.
+
+---
