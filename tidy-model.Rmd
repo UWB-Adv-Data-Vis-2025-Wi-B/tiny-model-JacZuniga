@@ -1,0 +1,104 @@
+---
+title: "tidy model"
+author: "Jack Torres Zuniga"
+output: html_document
+date: "2025-02-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(modeldata)
+```
+
+## Introduction
+
+This R Markdown document demonstrates my ability to use models for data analysis using a dataset collected on crickets.
+
+```{r load data, include=FALSE}
+data(crickets, package = "modeldata")
+names(crickets)
+```
+
+## What is that sound?
+
+In this report, we examine what factors predict a cricket's chirp rate.
+
+```{r summary, echo=FALSE}
+summary(crickets)
+
+ggplot(crickets, aes(x = rate)) +
+  geom_histogram(bins = 8) + 
+  ggtitle("Distribution of the chirp rate of crickets") +
+  xlab('Chirp rate (per min.)')
+```
+
+## Temperature affects chirp rate
+
+```{r temp, echo=FALSE}
+ggplot(crickets, aes(x = temp, y = rate)) +
+  geom_point() + 
+  geom_smooth(method = 'lm') +
+  ggtitle("Plot of temperature and chirp rate") +
+  ylab('Chirp rate (per min.)') +
+  xlab('Temperature (Celsius)')
+
+temp_lm <- lm(rate ~ temp, crickets)
+summary(temp_lm)
+```
+
+Based on a scatter plot of temperature and chirping and a correlation test, it seems that as temperature increases by one degree, the chirp rate increases by approximately 4.2 chirps per minute.
+
+## Species-specific effects of temperature on chirping
+
+```{r species, echo=FALSE}
+ggplot(crickets, aes(x = temp, y = rate, color = species)) +
+  geom_point() + 
+  geom_smooth(method = 'lm') +
+  ggtitle("Plot of temperature and chirp rate for two species of crickets") +
+  ylab('Chirp rate (per min.)') +
+  xlab('Temperature (Celsius)')
+
+species_lm <- lm(rate ~ temp + species, crickets)
+summary(species_lm)
+```
+
+The species-specific model improves accuracy, showing that **O. exclamationis** crickets chirp about 10 times more per minute than **O. niveus** at the same temperature.
+
+## Interactions
+
+```{r species histogram, echo=FALSE}
+ggplot(crickets, aes(x = rate, fill = species)) +
+  geom_histogram(position = 'identity', alpha = 0.7, bins = 8) + 
+  ggtitle("Distribution of the chirp rate of crickets") +
+  xlab('Chirp rate (per min.)')
+```
+
+```{r interactions, echo=FALSE}
+ggplot(crickets, aes(x = temp, y = rate, color = species)) +
+  geom_point() + 
+  geom_smooth(method = 'lm') +
+  ggtitle("Plot of temperature and chirp rate for two species of crickets") +
+  ylab('Chirp rate (per min.)') +
+  xlab('Temperature (Celsius)')
+
+species_x_temp_lm <- lm(rate ~ temp + species + temp:species, crickets)
+summary(species_x_temp_lm)
+
+anova(species_lm, species_x_temp_lm)
+```
+
+The interaction test shows no significant difference, so we can rely on the simpler species model.
+
+## Modeling diamond prices
+
+```{r diamonds, echo=FALSE}
+data(diamonds, package = "ggplot2")
+
+diamond_lm <- lm(price ~ carat + cut + clarity, diamonds)
+summary(diamond_lm)
+```
+
+This model predicts diamond prices based on carat size, cut, and clarity.
+
+---
